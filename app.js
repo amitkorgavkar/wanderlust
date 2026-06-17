@@ -85,9 +85,12 @@ app.use((req, res, next) =>{
 });
 
 app.use((err, req, res, next) =>{
-    // let { statusCode=500, message="Something went wrong" } = err;
-    // res.status(statusCode).send(message)
-    res.render("Error.ejs")
+    let { statusCode=500, message="Something went wrong" } = err;
+    if(err.name === "ValidationError"){
+        status = 400;
+        message = Object.values(err.errors).map(e => e.message).join(", ");
+    }
+    res.status(statusCode).render("Error.ejs", {message});
 })
 
 app.listen(8080, () =>{
