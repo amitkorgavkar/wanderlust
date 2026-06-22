@@ -4,14 +4,14 @@ const Schema = mongoose.Schema;
 const listingSchema = new Schema({
     title:{
         type: String,
-        require: [true, "Title is required"],
-        trim: [true],
-        maxlength: [100, "Title cannot exceed 100 characters"]
+        // require: [true, "Title is required"],
+        // trim: [true],
+        // maxlength: [100, "Title cannot exceed 100 characters"]
     },
     description:{
         type: String,
-        required: [true, "Description is required"],
-        trim: true
+        // required: [true, "Description is required"],
+        // trim: true
     },
     image:{
         filename: {
@@ -25,18 +25,18 @@ const listingSchema = new Schema({
     },
     price:{
         type: Number,
-        required: [true, "Price is required"],
-        min: [0, "Price cannot be negative"]
+        // required: [true, "Price is required"],
+        // min: [0, "Price cannot be negative"]
     },
     location:{
         type: String,
-        required: [true, "Location is required"],
-        trim: true
+        // required: [true, "Location is required"],
+        // trim: true
     },
     country:{
         type: String,
-        required: [true, "Country is required"],
-        trim: true
+        // required: [true, "Country is required"],
+        // trim: true
     }
 });
 
