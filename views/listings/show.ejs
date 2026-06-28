@@ -44,13 +44,18 @@
         <hr>
         <p><b>All Reviews</b></p>
         <div class="row">
-            <div class="card col-5 ms-3 mb-3">
-                <div class="card-body">
-                    <h5><div class="card-title">Khushboo Pandey</div></h5>
-                    <p><div class="card-text"><%= review.comment %></div></p>
-                    <p><div class="card-text"><%= review.rating %> stars</div></p>
+            <% for(review of listing.reviews){ %>
+                <div class="card col-5 ms-3 mb-3">
+                    <div class="card-body">
+                        <h5><div class="card-title">Khushboo Pandey</div></h5>
+                        <p><div class="card-text"><%= review.comment %></div></p>
+                        <p><div class="card-text"><%= review.rating %> stars</div></p>
+                        <form class="mb-3" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-dark">Delete</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            <% } %>
         </div>
     </div>
 
