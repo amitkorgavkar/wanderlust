@@ -56,7 +56,7 @@ router.get("/:id/edit", wrapAsync(async(req, res) =>{
         req.flash("error", "Listing you requested for does not exist!");
         res.redirect("/listings")
     }
-    res.render("listings/edit.ejs", { listing })
+    res.render("/listings/edit.ejs", { listing })
 }))
 
 //Update Route
