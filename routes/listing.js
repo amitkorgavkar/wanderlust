@@ -9,12 +9,12 @@ const {storage} = require("../cloudeConfig.js");
 const upload = multer({ storage });
 
 router.route("/").get(wrapAsync(index))
-.post(isLoggedIn, validateListing, upload.single('listing[image]'), wrapAsync(createListing));
+.post(isLoggedIn, upload.single('listing[image]'), validateListing, wrapAsync(createListing));
 
 //New Route
 router.get("/new", isLoggedIn, renderNewForm);
 
-router.route("/:id").get(wrapAsync(showPage)).put(validateListing, isOwner, isLoggedIn, wrapAsync(updateListing))
+router.route("/:id").get(wrapAsync(showPage)).put(isLoggedIn, isOwner, upload.single('listing[image]'), validateListing, wrapAsync(updateListing))
 .delete(isLoggedIn, isOwner, wrapAsync(deleteListing));
 
 //Edit Route
