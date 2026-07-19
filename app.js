@@ -1,3 +1,5 @@
+const dns = require('dns');
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 const express = require("express");
 const app = express(); 
 const mongoose = require("mongoose");
@@ -10,6 +12,7 @@ const listingRouter = require("./routes/listing.js");
 const reviewsRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js")
 const session = require("express-session");
+const { MongoStore } = require('connect-mongo');
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -28,12 +31,25 @@ main().then((res) =>{
 }).catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect(process.env.MONGO_URL);
+  await mongoose.connect(process.env.ATLASDB_URL);
 }
 
+const store = MongoStore.create({
+    mongoUrl : process.env.ATLASDB_URL,
+    crypto: {
+        secret: process.env.SESSION_SECRET,
+    },
+    touchAfter : 24 * 3600
+});
+
+store.on("error", () =>{
+    console.log("ERROR in MONGO SESSION STORE", err)
+})
+
 const sessionOpt = {
-    secret: "mysupersecretcode",
-    resave: false, 
+    store,
+    secret: process.env.SESSION_SECRET,
+    resave: false,
     saveUninitialized: true,
     cookie: {
         expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
@@ -42,9 +58,6 @@ const sessionOpt = {
     }
 };
 
-app.get("/", (req, res) =>{
-    res.send("Working");
-})
 
 app.use(session(sessionOpt));
 app.use(flash());
