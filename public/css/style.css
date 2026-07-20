@@ -29,6 +29,11 @@ body{
     flex-wrap: wrap;
     align-items: center;
 }
+
+#filters a{
+    text-decoration: none;
+    color: black;
+}
 .filter{
     text-align: center;
     margin-left: 1.8rem;

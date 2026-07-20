@@ -38,7 +38,6 @@ module.exports.createListing = async (req, res, next) =>{
     listing.image = {url, filename}
     listing.geometry = response.body.features[0].geometry;
     let savedListing = await Listing.insertOne(listing);
-    console.log(savedListing);
     req.flash("success", "New Lisitng Created!")
     res.redirect("/listings")
 };
@@ -80,24 +79,29 @@ module.exports.deleteListing = async (req, res) =>{
 }
 
 module.exports.searchListing = async(req, res) =>{
-    let { q } = req.query;
+    let { q, searchCategory } = req.query;
+    if(searchCategory){
+        const allListings = await Listing.find({ category: searchCategory });
+        return res.render("listings/index.ejs", { allListings })
+    }else{
+        if(!q || q.trim() === ""){
+            req.flash("error", "Please enter something to search for!");
+            return res.redirect("/listings");
+        }
 
-    if(!q || q.trim() === ""){
-        req.flash("error", "Please enter something to search for!");
-        res.redirect("/listings");
+        let regex = new RegExp(q, "i");
+        const allListings = await Listing.find({
+            $or: [
+                {title: regex},
+                {location: regex},
+                {country: regex}
+            ]
+        })
+
+        if(allListings.length === 0){
+            req.flash("error", `No listings found for "${q}"`)
+            return res.redirect("/listings")
+        }
+        return res.render("listings/index.ejs", {allListings})
     }
-
-    let regex = new RegExp(q, "i");
-    const allListings = await Listing.find({
-        $or: [
-            {title: regex},
-            {location: regex},
-            {country: regex}
-        ]
-    })
-
-    if(allListings.length === 0){
-        req.flash("error", `No listings found for "${q}"`)
-    }
-    res.render("listings/index.ejs", {allListings})
 }

@@ -12,7 +12,7 @@ router.route("/").get(wrapAsync(index))
 .post(isLoggedIn, upload.single('listing[image]'), validateListing, wrapAsync(createListing));
 
 //Search Route
-router.get("/seach", wrapAsync(searchListing))
+router.get("/search", wrapAsync(searchListing))
 
 //New Route
 router.get("/new", isLoggedIn, renderNewForm);

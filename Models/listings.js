@@ -49,6 +49,10 @@ const listingSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     },
+    category:{
+        type: String,
+        enum: ["Mountains", "Rooms", "Farms", "Arctic", "Camping", "Domes", "Iconic Cities", "Amazing Pools"],
+    },
     geometry: {
         type: {
             type: String,
