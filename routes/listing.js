@@ -11,6 +11,9 @@ const upload = multer({ storage });
 router.route("/").get(wrapAsync(index))
 .post(isLoggedIn, upload.single('listing[image]'), validateListing, wrapAsync(createListing));
 
+//Search Route
+router.get("/seach", wrapAsync(searchListing))
+
 //New Route
 router.get("/new", isLoggedIn, renderNewForm);
 
@@ -20,7 +23,5 @@ router.route("/:id").get(wrapAsync(showPage)).put(isLoggedIn, isOwner, upload.si
 //Edit Route
 router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(editListing))
 
-//Search Route
-router.get("/seach", wrapAsync(searchListing))
 
 module.exports = router;
