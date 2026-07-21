@@ -82,6 +82,10 @@ module.exports.searchListing = async(req, res) =>{
     let { q, searchCategory } = req.query;
     if(searchCategory){
         const allListings = await Listing.find({ category: searchCategory });
+        if(allListings.length === 0){
+            req.flash("error", "Currently not available!")
+            return res.redirect("/listings")
+        }
         return res.render("listings/index.ejs", { allListings })
     }else{
         if(!q || q.trim() === ""){
